@@ -1,0 +1,167 @@
+/* Custom styles for the Vigenère Cipher Web Interface */
+
+/* Beautiful gradient background */
+.bg-gradient {
+    background: linear-gradient(135deg, 
+        #667eea 0%, 
+        #764ba2 25%, 
+        #f093fb 50%, 
+        #f5576c 75%, 
+        #4facfe 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Card enhancements */
+.card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card-header {
+    background: linear-gradient(45deg, #007bff, #0056b3) !important;
+}
+
+/* Form controls styling */
+.form-control {
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Button enhancements */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #0056b3, #004085);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+}
+
+/* Action button styling */
+.btn-check:checked + .btn-outline-success {
+    background: linear-gradient(45deg, #28a745, #1e7e34);
+    border-color: #28a745;
+}
+
+.btn-check:checked + .btn-outline-warning {
+    background: linear-gradient(45deg, #ffc107, #e0a800);
+    border-color: #ffc107;
+    color: #212529;
+}
+
+/* Result section styling */
+.alert-success {
+    border-left: 5px solid #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+#result {
+    background: linear-gradient(45deg, #007bff, #0056b3) !important;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+/* Character counter */
+#charCount {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Loading animation */
+.btn.loading {
+    pointer-events: none;
+}
+
+.btn.loading .fas {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 2rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 2rem !important;
+    }
+}
+
+/* Form labels styling */
+.form-label {
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+/* Success animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Copy button hover effect */
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Input validation styling */
+.form-control.is-invalid {
+    border-color: #dc3545;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.form-control.is-valid {
+    border-color: #28a745;
+}
+
+/* Toast styling for notifications */
+.toast {
+    border: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+} 
