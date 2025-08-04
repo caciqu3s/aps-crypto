@@ -413,6 +413,3 @@ npx http-server
 ---
 
 **Desenvolvido para fins educacionais** - Demonstra conceitos fundamentais de criptografia, análise de performance e desenvolvimento de interfaces modernas em uma aplicação web completa e interativa.
-
-**Versão**: 2.0 - Interface completa com 3 funcionalidades principais
-**Última atualização**: Dezembro 2024
