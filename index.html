@@ -20,123 +20,618 @@
                     <i class="fas fa-shield-alt me-2"></i>
                     APS: Sistema de Comunicação Criptografada
                 </h1>
-                <p class="mb-0 mt-2 opacity-75">Cifra de Vigenère</p>
+                <p class="mb-0 mt-2 opacity-75">Cifra de Vigenère, César e Substituição</p>
             </div>
             
             <div class="card-body p-4">
-                <!-- Cipher Comparison Section -->
-                <div id="comparisonSection" class="row">
-                    <div class="col-12">
-                                                 <div class="card border-0 shadow">
-                             <div class="card-header bg-info text-white">
-                                 <h5 class="mb-0">
-                                     <i class="fas fa-stopwatch me-2"></i>
-                                     Comparação de Performance: 3 Técnicas de Criptografia
-                                 </h5>
-                             </div>
-                             <div class="card-body p-3">
-                                 <!-- Test Configuration -->
-                                 <div class="row g-3 mb-3">
-                                     <div class="col-md-5">
-                                         <label for="testMessage" class="form-label fw-bold small">
-                                             <i class="fas fa-file-text me-1"></i>Texto para Teste
-                                         </label>
-                                         <textarea 
-                                             class="form-control form-control-sm" 
-                                             id="testMessage" 
-                                             rows="2" 
-                                             placeholder="Digite o texto para teste..."
-                                         ></textarea>
-                                     </div>
-                                     <div class="col-md-2">
-                                         <label for="testKey" class="form-label fw-bold small">
-                                             <i class="fas fa-key me-1"></i>Chave
-                                         </label>
-                                         <input 
-                                             type="text" 
-                                             class="form-control form-control-sm" 
-                                             id="testKey" 
-                                             placeholder="CHAVE"
-                                             value="TESTKEY"
-                                         >
-                                     </div>
-                                     <div class="col-md-3">
-                                         <label for="iterations" class="form-label fw-bold small">
-                                             <i class="fas fa-repeat me-1"></i>Iterações
-                                         </label>
-                                         <select class="form-control form-control-sm" id="iterations">
-                                             <option value="100">100 (Rápido)</option>
-                                             <option value="1000" selected>1.000 (Médio)</option>
-                                             <option value="5000">5.000 (Lento)</option>
-                                         </select>
-                                     </div>
-                                     <div class="col-md-2 d-flex align-items-end">
-                                         <button 
-                                             type="button" 
-                                             class="btn btn-info btn-sm w-100"
-                                             onclick="generateRandomTest()"
-                                             title="Gerar texto aleatório"
-                                         >
-                                             <i class="fas fa-random"></i>
-                                         </button>
-                                     </div>
-                                 </div>
+                <!-- Tab Navigation -->
+                <ul class="nav nav-tabs nav-fill mb-4" id="mainTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="encrypt-tab" data-bs-toggle="tab" data-bs-target="#encrypt" type="button" role="tab" aria-controls="encrypt" aria-selected="true">
+                            <i class="fas fa-lock me-2"></i>
+                            <span class="d-none d-md-inline">Criptografar/Descriptografar</span>
+                            <span class="d-md-none">Cripto</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="comparison-tab" data-bs-toggle="tab" data-bs-target="#comparison" type="button" role="tab" aria-controls="comparison" aria-selected="false">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            <span class="d-none d-md-inline">Comparação de Performance</span>
+                            <span class="d-md-none">Comparação</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="test-tab" data-bs-toggle="tab" data-bs-target="#test" type="button" role="tab" aria-controls="test" aria-selected="false">
+                            <i class="fas fa-vial me-2"></i>
+                            <span class="d-none d-md-inline">Teste Individual</span>
+                            <span class="d-md-none">Teste</span>
+                        </button>
+                    </li>
+                </ul>
 
-                                 <!-- Action Buttons -->
-                                 <div class="row mb-3">
-                                     <div class="col-12 text-center">
-                                         <button 
-                                             type="button" 
-                                             class="btn btn-success me-2"
-                                             id="runTestBtn"
-                                             onclick="runPerformanceTest()"
-                                         >
-                                             <i class="fas fa-play me-2"></i>
-                                             Executar Teste
-                                         </button>
-                                         <button 
-                                             type="button" 
-                                             class="btn btn-outline-secondary btn-sm"
-                                             onclick="clearComparisonResults()"
-                                         >
-                                             <i class="fas fa-trash me-1"></i>
-                                             Limpar
-                                         </button>
-                                     </div>
-                                 </div>
+                <!-- Tab Content -->
+                <div class="tab-content" id="mainTabsContent">
+                    <!-- Encryption/Decryption Tab -->
+                    <div class="tab-pane fade show active" id="encrypt" role="tabpanel" aria-labelledby="encrypt-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-0 shadow">
+                                    <div class="card-header bg-success text-white">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-lock me-2"></i>
+                                            Criptografar e Descriptografar Mensagens
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <!-- Cipher Selection -->
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label fw-bold">
+                                                    <i class="fas fa-cog me-2"></i>Selecione o Algoritmo
+                                                </label>
+                                                <div class="btn-group w-100" role="group" aria-label="Cipher selection">
+                                                    <input type="radio" class="btn-check" name="cipherType" id="vigenere" value="vigenere" checked>
+                                                    <label class="btn btn-outline-primary" for="vigenere">
+                                                        <i class="fas fa-key me-2"></i>Vigenère
+                                                    </label>
+                                                    
+                                                    <input type="radio" class="btn-check" name="cipherType" id="caesar" value="caesar">
+                                                    <label class="btn btn-outline-secondary" for="caesar">
+                                                        <i class="fas fa-arrow-right me-2"></i>César
+                                                    </label>
+                                                    
+                                                    <input type="radio" class="btn-check" name="cipherType" id="substitution" value="substitution">
+                                                    <label class="btn btn-outline-info" for="substitution">
+                                                        <i class="fas fa-exchange-alt me-2"></i>Substituição
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <!-- Results Table -->
-                                <div id="comparisonResults" class="row" style="display: none;">
-                                    <div class="col-xl-7 col-lg-6 col-12 mb-3">
-                                        <h6 class="mb-2">
-                                            <i class="fas fa-chart-line me-1"></i>
-                                            Resultados da Comparação
-                                        </h6>
-                                        <div class="table-responsive">
-                                            <table class="table table-sm table-striped table-hover">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th class="text-nowrap">Algoritmo</th>
-                                                        <th class="text-nowrap">Cripto</th>
-                                                        <th class="text-nowrap">Descripto</th>
-                                                        <th class="text-nowrap">Segurança</th>
-                                                        <th class="text-nowrap">Ver</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="resultsTableBody">
-                                                </tbody>
-                                            </table>
+                                        <!-- Action Selection -->
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label fw-bold">
+                                                    <i class="fas fa-cog me-2"></i>Selecione a Operação
+                                                </label>
+                                                <div class="btn-group w-100" role="group" aria-label="Action selection">
+                                                    <input type="radio" class="btn-check" name="action" id="encryptAction" value="encrypt" checked>
+                                                    <label class="btn btn-outline-success" for="encryptAction">
+                                                        <i class="fas fa-lock me-2"></i>Criptografar
+                                                    </label>
+                                                    
+                                                    <input type="radio" class="btn-check" name="action" id="decryptAction" value="decrypt">
+                                                    <label class="btn btn-outline-warning" for="decryptAction">
+                                                        <i class="fas fa-unlock me-2"></i>Descriptografar
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Message Input -->
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="encryptMessage" class="form-label fw-bold">
+                                                    <i class="fas fa-envelope me-2"></i>Mensagem
+                                                </label>
+                                                <textarea 
+                                                    class="form-control" 
+                                                    id="encryptMessage" 
+                                                    rows="4" 
+                                                    placeholder="Digite sua mensagem aqui..."
+                                                    maxlength="128"
+                                                ></textarea>
+                                                <div class="form-text">
+                                                    <span id="encryptCharCount">0</span>/128 caracteres
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Key Input -->
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label for="encryptKey" class="form-label fw-bold">
+                                                    <i class="fas fa-key me-2"></i>Chave
+                                                </label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="encryptKey" 
+                                                    placeholder="Digite a palavra-chave..."
+                                                    required
+                                                >
+                                                <div class="form-text" id="keyHelp">
+                                                    Para Vigenère e Substituição: apenas letras. Para César: primeira letra define o deslocamento.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Process Button -->
+                                        <div class="row mb-3">
+                                            <div class="col-12 text-center">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-success btn-lg px-5 me-2"
+                                                    id="processEncryptBtn"
+                                                    onclick="processEncryption()"
+                                                >
+                                                    <i class="fas fa-magic me-2"></i>
+                                                    <span id="processBtnText">Criptografar Mensagem</span>
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-outline-secondary"
+                                                    onclick="clearEncryptInputs()"
+                                                    title="Limpar todos os campos"
+                                                >
+                                                    <i class="fas fa-eraser me-1"></i>
+                                                    Limpar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Result Section -->
+                                        <div id="encryptResultSection" class="row" style="display: none;">
+                                            <div class="col-12">
+                                                <div class="alert alert-success border-0 rounded-4 shadow-sm">
+                                                    <h5 class="alert-heading mb-3">
+                                                        <i class="fas fa-check-circle me-2"></i>
+                                                        <span id="encryptResultTitle">Processo de Criptografia Concluído</span>
+                                                    </h5>
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <strong>Algoritmo:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="usedAlgorithm"></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <strong>Chave Utilizada:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="usedEncryptKey"></div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <strong>Mensagem Original:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="originalEncryptMessage"></div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <strong>Resultado:</strong>
+                                                            <div class="bg-primary text-white p-3 rounded mt-2 position-relative" id="encryptResult">
+                                                                <button 
+                                                                    class="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2"
+                                                                    onclick="copyEncryptResult()"
+                                                                    title="Copiar resultado"
+                                                                >
+                                                                    <i class="fas fa-copy"></i>
+                                                                </button>
+                                                                <span id="encryptResultText"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Performance Chart -->
-                                    <div class="col-xl-5 col-lg-6 col-12">
-                                        <h6 class="mb-2">
-                                            <i class="fas fa-chart-bar me-1"></i>
-                                            Gráfico de Performance
-                                        </h6>
-                                        <div class="chart-container">
-                                            <canvas id="performanceChart" width="350" height="220"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Tab -->
+                    <div class="tab-pane fade" id="comparison" role="tabpanel" aria-labelledby="comparison-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-0 shadow">
+                                    <div class="card-header bg-info text-white">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-stopwatch me-2"></i>
+                                            Comparação de Performance: 3 Técnicas de Criptografia
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <!-- Test Configuration -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-lg-5 col-md-6">
+                                                <label for="testMessage" class="form-label fw-bold small">
+                                                    <i class="fas fa-file-text me-1"></i>Texto para Teste
+                                                </label>
+                                                <textarea 
+                                                    class="form-control form-control-sm" 
+                                                    id="testMessage" 
+                                                    rows="2" 
+                                                    placeholder="Digite o texto para teste..."
+                                                ></textarea>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-6">
+                                                <label for="testKey" class="form-label fw-bold small">
+                                                    <i class="fas fa-key me-1"></i>Chave
+                                                </label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    id="testKey" 
+                                                    placeholder="CHAVE"
+                                                    value="TESTKEY"
+                                                >
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-6">
+                                                <label for="iterations" class="form-label fw-bold small">
+                                                    <i class="fas fa-repeat me-1"></i>Iterações
+                                                </label>
+                                                <select class="form-control form-control-sm" id="iterations">
+                                                    <option value="100">100 (Rápido)</option>
+                                                    <option value="1000" selected>1.000 (Médio)</option>
+                                                    <option value="5000">5.000 (Lento)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-12 d-flex align-items-end">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-info btn-sm w-100"
+                                                    onclick="generateRandomTest()"
+                                                    title="Gerar texto aleatório"
+                                                >
+                                                    <i class="fas fa-random me-1"></i>
+                                                    <span class="d-none d-sm-inline">Aleatório</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Action Buttons -->
+                                        <div class="row mb-3">
+                                            <div class="col-12 text-center">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-success me-2"
+                                                    id="runTestBtn"
+                                                    onclick="runPerformanceTest()"
+                                                >
+                                                    <i class="fas fa-play me-2"></i>
+                                                    Executar Teste
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-outline-secondary btn-sm"
+                                                    onclick="clearComparisonResults()"
+                                                >
+                                                    <i class="fas fa-trash me-1"></i>
+                                                    Limpar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Results Table -->
+                                        <div id="comparisonResults" class="row" style="display: none;">
+                                            <div class="col-xl-7 col-lg-6 col-12 mb-3">
+                                                <h6 class="mb-2">
+                                                    <i class="fas fa-chart-line me-1"></i>
+                                                    Resultados da Comparação
+                                                </h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-striped table-hover">
+                                                        <thead class="table-dark">
+                                                            <tr>
+                                                                <th class="text-nowrap">Algoritmo</th>
+                                                                <th class="text-nowrap">Cripto</th>
+                                                                <th class="text-nowrap">Descripto</th>
+                                                                <th class="text-nowrap">Segurança</th>
+                                                                <th class="text-nowrap">Ver</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="resultsTableBody">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Performance Chart -->
+                                            <div class="col-xl-5 col-lg-6 col-12">
+                                                <h6 class="mb-2">
+                                                    <i class="fas fa-chart-bar me-1"></i>
+                                                    Gráfico de Performance
+                                                </h6>
+                                                <div class="chart-container">
+                                                    <canvas id="performanceChart" width="350" height="220"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Tab -->
+                    <div class="tab-pane fade" id="comparison" role="tabpanel" aria-labelledby="comparison-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-0 shadow">
+                                    <div class="card-header bg-info text-white">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-stopwatch me-2"></i>
+                                            Comparação de Performance: 3 Técnicas de Criptografia
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <!-- Test Configuration -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-lg-5 col-md-6">
+                                                <label for="testMessage" class="form-label fw-bold small">
+                                                    <i class="fas fa-file-text me-1"></i>Texto para Teste
+                                                </label>
+                                                <textarea 
+                                                    class="form-control form-control-sm" 
+                                                    id="testMessage" 
+                                                    rows="2" 
+                                                    placeholder="Digite o texto para teste..."
+                                                ></textarea>
+                                            </div>
+                                            <div class="col-lg-2 col-md-3 col-6">
+                                                <label for="testKey" class="form-label fw-bold small">
+                                                    <i class="fas fa-key me-1"></i>Chave
+                                                </label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    id="testKey" 
+                                                    placeholder="CHAVE"
+                                                    value="TESTKEY"
+                                                >
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-6">
+                                                <label for="iterations" class="form-label fw-bold small">
+                                                    <i class="fas fa-repeat me-1"></i>Iterações
+                                                </label>
+                                                <select class="form-control form-control-sm" id="iterations">
+                                                    <option value="100">100 (Rápido)</option>
+                                                    <option value="1000" selected>1.000 (Médio)</option>
+                                                    <option value="5000">5.000 (Lento)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-12 d-flex align-items-end">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-info btn-sm w-100"
+                                                    onclick="generateRandomTest()"
+                                                    title="Gerar texto aleatório"
+                                                >
+                                                    <i class="fas fa-random me-1"></i>
+                                                    <span class="d-none d-sm-inline">Aleatório</span>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Action Buttons -->
+                                        <div class="row mb-3">
+                                            <div class="col-12 text-center">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-success me-2"
+                                                    id="runTestBtn"
+                                                    onclick="runPerformanceTest()"
+                                                >
+                                                    <i class="fas fa-play me-2"></i>
+                                                    Executar Teste
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-outline-secondary btn-sm"
+                                                    onclick="clearComparisonResults()"
+                                                >
+                                                    <i class="fas fa-trash me-1"></i>
+                                                    Limpar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Results Table -->
+                                        <div id="comparisonResults" class="row" style="display: none;">
+                                            <div class="col-xl-7 col-lg-6 col-12 mb-3">
+                                                <h6 class="mb-2">
+                                                    <i class="fas fa-chart-line me-1"></i>
+                                                    Resultados da Comparação
+                                                </h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-striped table-hover">
+                                                        <thead class="table-dark">
+                                                            <tr>
+                                                                <th class="text-nowrap">Algoritmo</th>
+                                                                <th class="text-nowrap">Cripto</th>
+                                                                <th class="text-nowrap">Descripto</th>
+                                                                <th class="text-nowrap">Segurança</th>
+                                                                <th class="text-nowrap">Ver</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="resultsTableBody">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Performance Chart -->
+                                            <div class="col-xl-5 col-lg-6 col-12">
+                                                <h6 class="mb-2">
+                                                    <i class="fas fa-chart-bar me-1"></i>
+                                                    Gráfico de Performance
+                                                </h6>
+                                                <div class="chart-container">
+                                                    <canvas id="performanceChart" width="350" height="220"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Individual Test Tab -->
+                    <div class="tab-pane fade" id="test" role="tabpanel" aria-labelledby="test-tab">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-0 shadow">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-vial me-2"></i>
+                                            Teste Individual de Algoritmos
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <!-- Algorithm Selection -->
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="form-label fw-bold">
+                                                    <i class="fas fa-cog me-2"></i>Selecione o Algoritmo para Teste
+                                                </label>
+                                                <div class="btn-group w-100" role="group" aria-label="Algorithm selection">
+                                                    <input type="radio" class="btn-check" name="testCipherType" id="testVigenere" value="vigenere" checked>
+                                                    <label class="btn btn-outline-primary" for="testVigenere">
+                                                        <i class="fas fa-key me-2"></i>Vigenère
+                                                    </label>
+                                                    
+                                                    <input type="radio" class="btn-check" name="testCipherType" id="testCaesar" value="caesar">
+                                                    <label class="btn btn-outline-secondary" for="testCaesar">
+                                                        <i class="fas fa-arrow-right me-2"></i>César
+                                                    </label>
+                                                    
+                                                    <input type="radio" class="btn-check" name="testCipherType" id="testSubstitution" value="substitution">
+                                                    <label class="btn btn-outline-info" for="testSubstitution">
+                                                        <i class="fas fa-exchange-alt me-2"></i>Substituição
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Test Configuration -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-lg-6 col-md-6">
+                                                <label for="testIndividualMessage" class="form-label fw-bold">
+                                                    <i class="fas fa-envelope me-2"></i>Mensagem para Teste
+                                                </label>
+                                                <textarea 
+                                                    class="form-control" 
+                                                    id="testIndividualMessage" 
+                                                    rows="3" 
+                                                    placeholder="Digite a mensagem para testar o algoritmo..."
+                                                    maxlength="200"
+                                                ></textarea>
+                                                <div class="form-text">
+                                                    <span id="testCharCount">0</span>/200 caracteres
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3">
+                                                <label for="testIndividualKey" class="form-label fw-bold">
+                                                    <i class="fas fa-key me-2"></i>Chave
+                                                </label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="testIndividualKey" 
+                                                    placeholder="Digite a chave..."
+                                                    required
+                                                >
+                                                <div class="form-text" id="testKeyHelp">
+                                                    Para Vigenère e Substituição: apenas letras. Para César: primeira letra define o deslocamento.
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 d-flex align-items-end">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-warning w-100"
+                                                    onclick="generateIndividualTestData()"
+                                                    title="Gerar dados de teste"
+                                                >
+                                                    <i class="fas fa-random me-2"></i>
+                                                    Gerar Teste
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Test Actions -->
+                                        <div class="row mb-3">
+                                            <div class="col-12 text-center">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-success btn-lg me-2"
+                                                    id="runIndividualTestBtn"
+                                                    onclick="runIndividualTest()"
+                                                >
+                                                    <i class="fas fa-play me-2"></i>
+                                                    Executar Teste Individual
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-outline-secondary me-2"
+                                                    onclick="clearIndividualTest()"
+                                                >
+                                                    <i class="fas fa-trash me-1"></i>
+                                                    Limpar Resultados
+                                                </button>
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-outline-warning"
+                                                    onclick="clearIndividualTestInputs()"
+                                                    title="Limpar campos de entrada"
+                                                >
+                                                    <i class="fas fa-eraser me-1"></i>
+                                                    Limpar Campos
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Individual Test Results -->
+                                        <div id="individualTestResults" class="row" style="display: none;">
+                                            <div class="col-12">
+                                                <div class="alert alert-success border-0 rounded-4 shadow-sm">
+                                                    <h5 class="alert-heading mb-3">
+                                                        <i class="fas fa-check-circle me-2"></i>
+                                                        <span id="individualTestTitle">Teste Individual Concluído</span>
+                                                    </h5>
+                                                    
+                                                    <div class="row g-3">
+                                                        <div class="col-md-4">
+                                                            <strong>Algoritmo Testado:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="testedAlgorithm"></div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <strong>Chave Utilizada:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="testedKey"></div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <strong>Tempo de Execução:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="executionTime"></div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <strong>Mensagem Original:</strong>
+                                                            <div class="bg-light p-3 rounded mt-2" id="originalTestMessage"></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <strong>Mensagem Criptografada:</strong>
+                                                            <div class="bg-primary text-white p-3 rounded mt-2 position-relative" id="encryptedTestResult">
+                                                                <button 
+                                                                    class="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2"
+                                                                    onclick="copyTestResult('encrypted')"
+                                                                    title="Copiar resultado criptografado"
+                                                                >
+                                                                    <i class="fas fa-copy"></i>
+                                                                </button>
+                                                                <span id="encryptedTestText"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <strong>Mensagem Descriptografada:</strong>
+                                                            <div class="bg-success text-white p-3 rounded mt-2 position-relative" id="decryptedTestResult">
+                                                                <button 
+                                                                    class="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2"
+                                                                    onclick="copyTestResult('decrypted')"
+                                                                    title="Copiar resultado descriptografado"
+                                                                >
+                                                                    <i class="fas fa-copy"></i>
+                                                                </button>
+                                                                <span id="decryptedTestText"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
