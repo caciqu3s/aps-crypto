@@ -40,12 +40,11 @@ Simplesmente abra o arquivo `index.html` em qualquer navegador moderno. Não é 
 
 ```
 aps-crypto/
-├── index.html          # Página principal
-├── styles.css          # Estilos customizados
-├── vigenere-web.js     # Lógica da cifra de Vigenère
-├── app.js              # Controle da interface
-├── README.md           # Este arquivo
-└── README-web.md       # Documentação detalhada
+├── index.html              # Página principal
+├── styles.css              # Estilos customizados
+├── cipher-algorithms.js    # Lógica das cifras (Vigenère, César, Substituição)
+├── app.js                  # Controle da interface e comparação
+└── README.md               # Este arquivo
 ```
 
 ## 🎯 Demonstração rápida
@@ -68,6 +67,7 @@ Para testar rapidamente:
 - **JavaScript ES6** - Lógica da aplicação
 - **Bootstrap 5** - Framework responsivo
 - **Font Awesome 6** - Ícones
+- **Canvas API** - Gráficos de performance
 
 ## 📱 Compatibilidade
 
